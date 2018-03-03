@@ -10,7 +10,7 @@ import matplotlib.pyplot as plt
 
 
 # Hyper Parameters
-num_epochs = 5
+num_epochs = 30
 batch_size = 16
 learning_rate = 0.001
 
@@ -19,6 +19,7 @@ data_transforms = {
         transforms.Resize(256),
         transforms.RandomResizedCrop(224),
         transforms.RandomHorizontalFlip(),
+        transforms.RandomVerticalFlip(),
         transforms.ToTensor(),
         transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
     ]),
@@ -121,7 +122,7 @@ for epoch in range(num_epochs):
 
         outputs = cnn(imagesv)
         _, predicted = torch.max(outputs.data, 1)
-        total += labels.size(0)
+        total += labelsv.size(0)
         correct += (predicted == labelsv.data).sum()
 
     val_acc = 100 * correct / total
@@ -133,4 +134,5 @@ for epoch in range(num_epochs):
 
 
 #Save the Trained Model
-torch.save(best_model_wts, 'cnn.pkl')
+torch.save(best_model_wts, 'cnn_2layer_latest.pkl')
+print ('best val acc: %d' %(best_acc))
